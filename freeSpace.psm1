@@ -54,21 +54,21 @@ function Get-FreeDiskSpace {
         -AutoSize
 
     # Variables for email to admin
-    $ToAddress = "losthighwayphoto@gmail.com"
-    $FromAddress = "brian@bhartley.com"
-    $Subject = "FreeDiskSpace report for AsusMobile"
-    $SMTPServer = "oxmail.registrar-servers.com"
-    $username = "brian@bhartley.com"
-    $pass = cat C:\Users\Brian\Documents\WindowsPowershell\adminEmailPass.txt | ConvertTo-SecureString
+    $ToAddress = "toAddress@some-server.com"
+    $FromAddress = "you@your-server.com"
+    $Subject = "FreeDiskSpace report for {Get-Content Env:\COMPUTERNAME}"
+    $SMTPServer = "smtp.your-server.com"
+    $username = "you@your-server.com"
+    $pass = cat C:\Scripts\adminEmailPass.txt | ConvertTo-SecureString
     $Creds = new-object -typename System.Management.Automation.PSCredential -argumentlist $username, $pass
 
     # Create / overwrite log file, timestamp it
-    $LogFile = New-Item C:\Users\Brian\Documents\WindowsPowershell\ScriptResults\freediskspace.txt -ItemType File -Force
+    $LogFile = New-Item C:\Scripts\freespace\freeSpaceResults.txt -ItemType File -Force
     $TimeStamp = Get-Date
-    $TimeStamp | Out-File C:\Users\Brian\Documents\WindowsPowershell\ScriptResults\freediskspace.txt -Append
+    $TimeStamp | Out-File C:\Scripts\freespace\freeSpaceResults.txt -Append
 
     # For each computer name, run Get-FreeDiskSpace and append results to file
-    $ComputerName | foreach{ $freespace} | Out-File C:\Users\Brian\Documents\WindowsPowershell\ScriptResults\freediskspace.txt -Append
+    $ComputerName | foreach{ $freespace} | Out-File C:\Scripts\freespace\freeSpaceResults.txt -Append
 
     # Read results file, convert to string to place in email body
     $resultsBody = (Get-Content $LogFile | Out-String)
